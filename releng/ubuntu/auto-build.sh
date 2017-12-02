@@ -9,18 +9,21 @@ rsync -a --exclude=releng --exclude=node_modules src/ work/
 cd src
 . releng/config/config.sh
 
-if [ ! -d releng/ubuntu/cache ]; then
-	mkdir -p releng/ubuntu/cache
-fi
+if [ ! "$TRAVIS" = "y" ]; then
+	if [ ! -d releng/ubuntu/cache ]; then
+		mkdir -p releng/ubuntu/cache
+	fi
 
-cd releng/ubuntu/cache
-cp ../../../package.json .
-python3 ../../../tools/common/npm_wrapper.py
-if [ ! -d node_modules/es6-shim ]; then
-	npm install es6-shim
-fi
+	cd releng/ubuntu/cache
+	cp -a ../../../package.json .
+	python3 ../../../tools/common/npm_wrapper.py
+	if [ ! -d node_modules/es6-shim ]; then
+		npm install es6-shim
+	fi
 
-cd ../../../../work
+	cd ../../..
+fi
+cd ../work
 
 export QT_SELECT=5
 if [ -z "$VERSION" ]; then
@@ -28,7 +31,12 @@ if [ -z "$VERSION" ]; then
 fi
 UBUNTU_VERSION="artful"
 
-rsync -au ../src/releng/ubuntu/cache/node_modules/ node_modules/
+if [ "$TRAVIS" = "y" ]; then
+	python tools/common/npm_wrapper.py
+else
+	rsync -au ../src/releng/ubuntu/cache/node_modules/ node_modules/
+fi
+
 python3 configure.py
 ninja resources
 

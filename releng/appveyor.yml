@@ -1,12 +1,12 @@
 version: 0.8.0-dev+appv.{build}
 pull_requests:
-    do_not_increment_build_number: true
+  do_not_increment_build_number: true
 
 skip_non_tags: true
 clone_depth: 1
 clone_folder: C:\knossos
 install:
-  - cmd: >-
+- cmd: >-
     cd C:\knossos
     set "PATH=C:\Python36\Scripts;%PATH%"
 
@@ -16,7 +16,7 @@ install:
     pipenv run python tools/common/download_archive.py releng/windows/support/support.json
 
 build_script:
-  - cmd: >-
+- cmd: >-
     cd C:\knossos
     set "PATH=%CD%\releng\windows\support;C:\Python36\Scripts;%PATH%"
 
@@ -35,8 +35,8 @@ build_script:
     pip install githubrelease
     githubrelease asset ngld/knossos upload "%APPVEYOR_REPO_TAG_NAME%" "releng\windows\dist\*.exe"
 artifacts:
-  - path: releng\windows\dist\Knossos-*.exe
-    name: Installer
+- path: releng\windows\dist\Knossos-*.exe
+  name: Installer
 
-  - path: releng\windows\dist\update-*.exe
-    name: Updater
+- path: releng\windows\dist\update-*.exe
+  name: Updater
