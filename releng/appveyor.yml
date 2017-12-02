@@ -2,7 +2,7 @@ version: 0.8.0-dev+appv.{build}
 pull_requests:
   do_not_increment_build_number: true
 
-skip_non_tags: true
+#skip_non_tags: true
 clone_depth: 1
 clone_folder: C:\knossos
 install:
@@ -29,14 +29,17 @@ build_script:
     if errorlevel 1 exit /b 1
 
     ninja installer
-
-    if "%APPVEYOR_REPO_TAG%" == "false" goto :eof
-
-    pip install githubrelease
-    githubrelease asset ngld/knossos upload "%APPVEYOR_REPO_TAG_NAME%" "releng\windows\dist\*.exe"
 artifacts:
 - path: releng\windows\dist\Knossos-*.exe
   name: Installer
 
 - path: releng\windows\dist\update-*.exe
   name: Updater
+
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: O3HGtJExInVx0l/ytgKnvWp8r91TJUqGfgEdz75RWXCtnaSONe/CLch8BD2VaLL8
+
+  #on:
+  #  appveyor_repo_tag: true
