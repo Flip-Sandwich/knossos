@@ -13,9 +13,9 @@ before_install:
 - VERSION="$(python setup.py get_version)"
 - if [ -n "$TRAVIS_TAG" ]; then RELEASE=y; fi
 
-- docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION"
+- docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y
   ngld/knossos-builders:ubuntu bash /build/src/releng/ubuntu/auto-build.sh
 
-- docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION"
+- docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y
   ngld/knossos-builders:arch bash /build/src/releng/arch/auto-build.sh
 
