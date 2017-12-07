@@ -1,4 +1,4 @@
-set "PATH=%CD%\releng\windows\support;C:\Python36\Scripts;%PATH%"
+set "PATH=%CD%\releng\windows\support;C:\Python36;C:\Python36\Scripts;%PATH%"
 
 mkdir releng\windows\dist
 
