@@ -17,12 +17,12 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
 else
     case "$1" in
         ubuntu)
-            docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y
+            docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y \
               ngld/knossos-builders:ubuntu bash /build/src/releng/ubuntu/auto-build.sh
             ;;
 
         arch)
-            docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y
+            docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y \
               ngld/knossos-builders:arch bash /build/src/releng/arch/auto-build.sh
             ;;
     esac
