@@ -7,8 +7,8 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_fff3b1abfe83_key -iv $encrypted_fff3b1abfe83_iv
   -in ci.tar.enc -out ci.tar -d
 - tar -xf ci.tar
-- cd ../..
 
+script:
 - RELEASE=n
 - VERSION="$(python setup.py get_version)"
 - if [ -n "$TRAVIS_TAG" ]; then RELEASE=y; fi
@@ -18,4 +18,3 @@ before_install:
 
 - docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y
   ngld/knossos-builders:arch bash /build/src/releng/arch/auto-build.sh
-
