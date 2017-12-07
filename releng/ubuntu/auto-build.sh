@@ -3,7 +3,7 @@
 set -eo pipefail
 
 cd /build
-sudo chown packager .
+sudo chown packager . src/releng/ubuntu/dist
 rsync -a --exclude=releng --exclude=node_modules src/ work/
 
 cd src
@@ -11,8 +11,9 @@ cd src
 
 if [ ! "$TRAVIS" = "y" ]; then
 	if [ ! -d releng/ubuntu/cache ]; then
-		mkdir -p releng/ubuntu/cache
+		sudo mkdir -p releng/ubuntu/cache
 	fi
+	sudo chown -R packager releng/ubuntu/cache
 
 	cd releng/ubuntu/cache
 	cp -a ../../../package.json .
@@ -76,5 +77,6 @@ knossos ($VERSION-1) $UBUNTU_VERSION; urgency=medium
 EOF
 
 	dpkg-buildpackage -us -uc
+
 	cp ../knossos_*.deb /build/src/releng/ubuntu/dist
 fi
