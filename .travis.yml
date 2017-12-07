@@ -1,6 +1,17 @@
+language: generic
+#branches:
+#  only:
+#    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+
 sudo: required
 services:
-- docker
+  - docker
+
+matrix: 
+  include:
+    - os: linux
+    - os: osx
+      sudo: false
 
 before_install:
 - cd releng/config
@@ -8,13 +19,10 @@ before_install:
   -in ci.tar.enc -out ci.tar -d
 - tar -xf ci.tar
 
+install:
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then bash releng/macos/provision.sh; fi
+
 script:
-- RELEASE=n
-- VERSION="$(python setup.py get_version)"
-- if [ -n "$TRAVIS_TAG" ]; then RELEASE=y; fi
-
-- docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y
-  ngld/knossos-builders:ubuntu bash /build/src/releng/ubuntu/auto-build.sh
-
-- docker run --rm -v"$(pwd)":/build/src -u packager -e RELEASE="$RELEASE" -e VERSION="$VERSION" -e TRAVIS=y
-  ngld/knossos-builders:arch bash /build/src/releng/arch/auto-build.sh
+- bash ./releng/ci/travis.sh macos
+- bash ./releng/ci/travis.sh ubuntu
+- bash ./releng/ci/travis.sh arch
